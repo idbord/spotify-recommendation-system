@@ -2,6 +2,7 @@ import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 import pandas as pd
 import json
+from math import *
 
 cid = 'd7ef747707434c259054733b6defab05'
 secret = '3a4ae1a96ac24674b1eb14ba39fbacc8'
@@ -46,4 +47,40 @@ def yearURIs(year):
 def buildDataFrame(uris, indexNames):
     jsonSongs = sp.audio_features(uris)
     df = pd.DataFrame(data = jsonSongs, index = indexNames)
+    # pd.set_option('display.max_columns', None) # Setting allows for entire dataset to be printed
     return df.drop(columns = ["type", "id", "uri", "track_href", "analysis_url", "time_signature"])
+
+"""
+Rounds the numeric values within the fields with some transformations, if needed. 
+"""
+def roundAndMapValues(dataframe):
+    dataframe["danceability"] = [mapValues(round(i*100, 0)) for i in dataframe["danceability"]]
+    dataframe["energy"] = [round(i*100, 0) for i in dataframe["energy"]]
+    dataframe["loudness"] = [round(i, 0) for i in dataframe["loudness"]]
+    dataframe["speechiness"] = [round(i * 100, 0) for i in dataframe["speechiness"]]
+    dataframe["acousticness"] = [round(i * 100, 0) for i in dataframe["acousticness"]]
+    dataframe["instrumentalness"] = [round(i * 100, 0) for i in dataframe["instrumentalness"]]
+    dataframe["liveness"] = [round(i * 100, 0) for i in dataframe["liveness"]]
+    dataframe["valence"] = [round(i * 100, 0) for i in dataframe["valence"]]
+    dataframe["tempo"] = [round(i, 0) for i in dataframe["tempo"]]
+    return dataframe
+
+"""
+Maps numeric values, according to a step function of tens 
+(i.e. 0 - 10, 10 - 20)
+"""
+def mapValues(num):
+    num = abs(num)
+    len = int(log10(num)+1)
+    if(len == 1):
+        return 0
+    elif(len == 2):
+        return getDigit(1, num)
+    else:
+        return int(str(getDigit(2, num)) + str(getDigit(1, num)))
+
+"""
+Returns wanted digit from a number
+"""
+def getDigit(want, num):
+    return num // 10**want % 10

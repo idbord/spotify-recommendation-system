@@ -18,4 +18,5 @@ if __name__ == '__main__':
     artistList, trackList, uriList = dataOrganization.yearURIs(2020)
 
     dataFrame = dataOrganization.buildDataFrame(uriList, trackList)
-    print(dataFrame)
+    dataframe = dataOrganization.roundAndMapValues(dataFrame)
+    print(dataframe)
