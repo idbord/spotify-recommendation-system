@@ -36,16 +36,15 @@ if __name__ == '__main__':
     dataFrameTestX = dataFrameTest2[:,0:11]
 
 
-
     nb = NaiveBayes(dataFrameTrainX,dataFrameTrainY)
     nb.fit(dataFrameTrainX,dataFrameTrainY)
     y_pred = nb.predict(dataFrameTestX)
-    print(y_pred)
 
 
-
-
-
-
-
+    print("Possible playlist:")
+    for _ in range(len(y_pred)):
+        status = "No"
+        if y_pred[_] == 1:
+            status = "Yes"
+        print(f"{ttrackName[_]} by {ttrackName[_]}: {status}")
 
