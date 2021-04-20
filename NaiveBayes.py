@@ -27,6 +27,7 @@ class NaiveBayes:
 
         return np.argmax(probs, 1)
 
+    #Density function based off of Gaussian Naive Bayes implementation
     def density_function(self, x, mean, sigma):
         const = -self.num_features/2 * np.log(2*np.pi) - 0.5*np.sum(np.log(sigma+self.eps))
         probs = 0.5*np.sum(np.power(x-mean, 2)/(sigma+self.eps), 1)
