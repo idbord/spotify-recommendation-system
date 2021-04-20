@@ -12,10 +12,21 @@ sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
 
 def playlistReader(data):
     uriList = []
+    track_name = []
+    values = []
     for song in data:
         uriList.append(findID(song[1], song[0])[2][0])
-    
-    return uriList
+        track_name.append(song[0])
+        values.append(int(song[2]))
+    return uriList, track_name, values
+
+def playlistReaderCompare(data):
+    uriList = []
+    track_name = []
+    for song in data:
+        uriList.append(findID(song[1], song[0])[2][0])
+        track_name.append(song[0])
+    return uriList, track_name
 
 def findID(artist, track):
     artist_name = []
@@ -34,20 +45,29 @@ def yearURIs(year):
     artist_name = []
     track_name = []
     track_id = []
+    values = []
 
     track_results = sp.search(q=f'year:{year}', type='track', limit=50)
     for i, t in enumerate(track_results['tracks']['items']):
         artist_name.append(t['artists'][0]['name'])
         track_name.append(t['name'])
         track_id.append(t['id'])
+        values.append("Yes")
 
-    return artist_name, track_name, track_id
+    return artist_name, track_name, track_id, values
 
 
-def buildDataFrame(uris, indexNames):
+def buildDataFrame(uris, indexNames, values):
     jsonSongs = sp.audio_features(uris)
     df = pd.DataFrame(data = jsonSongs, index = indexNames)
-    pd.set_option('display.max_columns', None) # Setting allows for entire dataset to be printed
+    df.loc[:,"Classification"] = values
+    # pd.set_option('display.max_columns', None) # Setting allows for entire dataset to be printed
+    return df.drop(columns = ["type", "id", "uri", "track_href", "analysis_url", "duration_ms", "time_signature"])
+
+def buildDataFrameCompare(uris, indexNames):
+    jsonSongs = sp.audio_features(uris)
+    df = pd.DataFrame(data = jsonSongs, index = indexNames)
+    # pd.set_option('display.max_columns', None) # Setting allows for entire dataset to be printed
     return df.drop(columns = ["type", "id", "uri", "track_href", "analysis_url", "time_signature"])
 
 """
