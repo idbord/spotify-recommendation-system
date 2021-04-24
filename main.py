@@ -1,7 +1,8 @@
 import dataOrganization
 import numpy
 from NaiveBayes import *
-import pandas
+from KNearestNeighbor import *
+from KMeans import *
 
 def readFile(path):
     try:
@@ -48,3 +49,7 @@ if __name__ == '__main__':
             status = "Yes"
         print(f"{ttrackName[_]} by {ttrackName[_]}: {status}")
 
+    KNNTest = KNN(3)
+    KNNTest.fit(dataFrameTrainX, dataFrameTrainY)
+    predictions = KNNTest.predict(dataFrameTestX)
+    print(predictions)

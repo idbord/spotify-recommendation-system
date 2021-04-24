@@ -19,7 +19,8 @@ class NaiveBayes:
             self.classes_prior[str(c)] = X_c.shape[0]/self.num_examples
 
     def predict(self, X):
-        probs = np.zeros((self.num_examples, self.num_classes))
+        predict_num_examples, predict_num_features = X.shape
+        probs = np.zeros((predict_num_examples, self.num_classes))
         for c in range(self.num_classes):
             prior = self.classes_prior[str(c)]
             probs_c = self.density_function(X, self.classes_mean[str(c)], self.classes_var[str(c)])
