@@ -4,6 +4,9 @@ from NaiveBayes import *
 from KNearestNeighbor import *
 from RandomForest import *
 from sklearn.ensemble import RandomForestClassifier
+# from KMeans import *
+import analytics
+
 
 def readFile(path):
     try:
@@ -59,6 +62,7 @@ if __name__ == '__main__':
     KNNTest.fit(dataFrameTrainX, dataFrameTrainY)
     predictions = KNNTest.predict(dataFrameTestX)
     print(predictions)
+
 
     rf = RandomForest(100)
     rf.fitLocal(dataFrameTrainX,dataFrameTrainY)
