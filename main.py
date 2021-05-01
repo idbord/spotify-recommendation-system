@@ -1,26 +1,7 @@
-import dataOrganization
-import numpy
-from NaiveBayes import *
-from KNearestNeighbor import *
-from RandomForest import *
-from sklearn.ensemble import RandomForestClassifier
-# from KMeans import *
-import analytics
-
-
-def readFile(path):
-    try:
-        fptr = open(path)
-        result = []
-        for line in fptr.readlines():
-            result.append(line[:-1].split(","))
-        return result
-
-    except:
-        return []
-
+import UserInterface
 
 if __name__ == '__main__':
+<<<<<<< HEAD
     songData = readFile("./Playlists/songs2.csv")
     songsURIList, songsTrackNames, songsClassification = dataOrganization.playlistReader(songData)
     songsDataFrame = dataOrganization.buildDataFrame(songsURIList, songsTrackNames, songsClassification)
@@ -56,14 +37,24 @@ if __name__ == '__main__':
     songsTable = analytics.findAverage(songsDataFrameRounded, "Songs")
     analyticsTable = analytics.dataTable(songsTable, comparatorPlayListUpdated.transpose())
     print(analyticsTable)
+=======
+    """
+    If you want to make your own playlist or comparator playlist, please add the
+    file name to the lists below.
+>>>>>>> 185d8767790b75c43644c3f596a6be59fb17ccee
 
+    sFiles = Song files
+    sFile format: song,artist,like or not like (1 = like, 0 = do not like) 
+    sFile Example: The Box,Roddy Ricch,0
 
-    KNNTest = KNN(3)
-    KNNTest.fit(dataFrameTrainX, dataFrameTrainY)
-    predictions = KNNTest.predict(dataFrameTestX)
-    print(predictions)
+    cFiles = Comparator files
+    cFile format: song,artist
+    cFile Example: The Box,Roddy Ricch
 
+    Once you are ready to start, just run this main.py file.
+    """
+    sFiles = ["songs.csv", "songs2.csv"]
+    cFiles = ["comparator.csv", "comparator2.csv"]
 
-    rf = RandomForest(100)
-    rf.fitLocal(dataFrameTrainX,dataFrameTrainY)
-    print(rf.prediction(dataFrameTestX))
+    Demo = UserInterface.Demo(sFiles, cFiles)
+    Demo.run()

@@ -23,4 +23,8 @@ def findAverage(table, tableName):
     for index, val in enumerate(table.columns):
         result[val] = temp[index] / total
 
+<<<<<<< HEAD
     return {tableName: result}
+=======
+    return {tableName : result}
+>>>>>>> 185d8767790b75c43644c3f596a6be59fb17ccee
