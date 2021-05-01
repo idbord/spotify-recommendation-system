@@ -1,21 +1,16 @@
 import pandas as pd
-import numpy as np
 
-"""
-Creates a new data table based on the average of the original songs playlist we created
-and the values of the songs our comparitive playlist matches with 
-"""
+
+# Creates a new data table based on the average of the original songs playlist we created
+# and the values of the songs our comparative playlist matches with
 def dataTable(*args):
     result = dict()
     for dictionaries in args:
         result.update(dictionaries)
-    return pd.DataFrame(data = result).transpose()
+    return pd.DataFrame(data=result).transpose()
 
 
-"""
-Finds the average of a data table and return a dictionary of the 
-averages and the table name
-"""
+# Finds the average of a data table and return a dictionary of the averages and the table name
 def findAverage(table, tableName):
     temp = [0] * len(table.columns)
     total = 0
@@ -28,5 +23,4 @@ def findAverage(table, tableName):
     for index, val in enumerate(table.columns):
         result[val] = temp[index] / total
 
-    
-    return {tableName : result}
+    return {tableName: result}

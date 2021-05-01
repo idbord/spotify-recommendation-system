@@ -21,13 +21,13 @@ def readFile(path):
 
 
 if __name__ == '__main__':
-    songData = readFile("./songs2.csv")
+    songData = readFile("./Playlists/songs2.csv")
     songsURIList, songsTrackNames, songsClassification = dataOrganization.playlistReader(songData)
     songsDataFrame = dataOrganization.buildDataFrame(songsURIList, songsTrackNames, songsClassification)
     songsDataFrameRounded = dataOrganization.roundAndMapValues(songsDataFrame)
     songsDataFrameTestNumpy = songsDataFrameRounded.to_numpy()
 
-    comparatorData = readFile("./comparator2.csv")
+    comparatorData = readFile("./Playlists/comparator2.csv")
     comparatorURIList, comparatorTrackNames = dataOrganization.playlistReaderCompare(comparatorData)
     comparatorDataFrame = dataOrganization.buildDataFrameCompare(comparatorURIList, comparatorTrackNames)
     comparatorDataFrameRounded = dataOrganization.roundAndMapValues(comparatorDataFrame)
