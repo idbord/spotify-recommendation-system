@@ -1,5 +1,4 @@
 import pandas as pd
-import numpy as np
 
 """
 Creates a new data table based on the average of the original songs playlist we created

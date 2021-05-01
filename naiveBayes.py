@@ -1,5 +1,6 @@
 import numpy as np
-import math
+
+#TODO Comment this code
 
 class NaiveBayes:
     def __init__(self, X, y):

@@ -1,7 +1,6 @@
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 import pandas as pd
-import json
 from math import *
 
 cid = 'd7ef747707434c259054733b6defab05'

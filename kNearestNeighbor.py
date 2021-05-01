@@ -1,6 +1,9 @@
 import numpy as np
 from collections import Counter
 
+# TODO Comment this code
+
+
 def euclideanDistance(x1, x2):  # Calculates euclidean distance based off two input values
     return np.sqrt(np.sum((x1 - x2) ** 2))
 

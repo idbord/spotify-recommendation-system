@@ -1,9 +1,8 @@
 import dataOrganization
 import numpy
-from NaiveBayes import *
-from KNearestNeighbor import *
-from RandomForest import *
-from sklearn.ensemble import RandomForestClassifier
+from naiveBayes import *
+from kNearestNeighbor import *
+from randomForest import *
 import analytics
 
 class Demo:
@@ -31,6 +30,7 @@ class Demo:
         self.cFiles = cFiles
 
     def readFile(self, path):
+        path = "./Playlists/" + path
         try:
             fptr = open(path)
             result = []
@@ -149,7 +149,7 @@ class Demo:
         print("Song Playlists: ")
         for index, playlist in enumerate(self.sFiles):
             print(f"{index + 1}. {playlist}")
-        songOption = input("Choose playlist: ") # grabs song pick
+        songOption = input("Choose playlist: ")  # Grabs song pick
 
         """
         sets songFile to what you option you picked as long as it
@@ -163,8 +163,8 @@ class Demo:
         print("Comparator Playlists: ")
         for index, playlist in enumerate(self.cFiles):
             print(f"{index + 1}. {playlist}")
-        print(f"{len(self.cFiles) + 1}. Choose a year (2019 or earlier)") #2020 will not work for some reason, but 2019 will
-        comparatorOption = input("Choose playlist: ") # grab comparator option
+        print(f"{len(self.cFiles) + 1}. Choose a year (2019 or earlier)")  # 2020 will not work for some reason, but 2019 will
+        comparatorOption = input("Choose playlist: ")  # Grab comparator option
         
         """
         Checks if it's within bounds of comparator playlist or if

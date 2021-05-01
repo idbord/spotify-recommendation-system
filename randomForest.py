@@ -1,6 +1,6 @@
-import numpy as np
-import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
+
+#TODO Comment this code
 
 class RandomForest:
     def __init__(self, n_trees):# classifier = RandomForestClassifier(n_estimators=n_trees)
