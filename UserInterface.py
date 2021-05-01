@@ -142,8 +142,8 @@ class Demo:
     automatically adjust, so you can choose what playlist you want. 
     """
     def getFiles(self):
-        songFile = "/Playlists/songs.csv"
-        comparatorFile = "/Playlists/comparator.csv"
+        songFile = "songs.csv"
+        comparatorFile = "comparator.csv"
 
         # Displays songs
         print("Song Playlists: ")

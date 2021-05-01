@@ -4,19 +4,8 @@ import pandas as pd
 import json
 from math import *
 
-# These codes are how we connect to the Spotify API
 cid = 'd7ef747707434c259054733b6defab05'
 secret = '3a4ae1a96ac24674b1eb14ba39fbacc8'
-<<<<<<< HEAD
-
-# Set to False to not print out whole data set, True to print the whole data set out
-print_data_set = False
-
-client_credentials_manager = SpotifyClientCredentials(client_id=cid, client_secret=secret)
-sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
-
-
-=======
 client_credentials_manager = SpotifyClientCredentials(client_id=cid, client_secret=secret)
 sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
 
@@ -25,7 +14,6 @@ Given the data from our song file, we can append the URI's to a list
 as well as build two other lists for whether we like it or not and 
 for the track name. Each URI is unique to each song.
 """
->>>>>>> 185d8767790b75c43644c3f596a6be59fb17ccee
 def playlistReader(data):
     uriList = []
     track_name = []
@@ -36,14 +24,10 @@ def playlistReader(data):
         values.append(int(song[2]))
     return uriList, track_name, values
 
-<<<<<<< HEAD
-
-=======
 """
 Given the data from our comparator file, we can build a list of URI's that
 will help us build the pandas table. Each URI is unique to each song. 
 """
->>>>>>> 185d8767790b75c43644c3f596a6be59fb17ccee
 def playlistReaderCompare(data):
     uriList = []
     track_name = []
@@ -52,15 +36,10 @@ def playlistReaderCompare(data):
         track_name.append(song[0])
     return uriList, track_name
 
-<<<<<<< HEAD
-
-# Uses the artist name and the name of the track to find the ID of the song in Spotify
-=======
 """
 We can search up any song on spotify with just a given artist
 and track. We then append it to a list and returned.
 """
->>>>>>> 185d8767790b75c43644c3f596a6be59fb17ccee
 def findID(artist, track):
     artist_name = []
     track_name = []
@@ -74,15 +53,10 @@ def findID(artist, track):
 
     return artist_name, track_name, track_id
 
-<<<<<<< HEAD
-
-# Finds the Artist, Track Name, URI, and Song information for the top 50 songs of the given year
-=======
 """
 Given a year, we can pull the top 50 of a song from that year. We then append
 all of the values to the list to return.
 """
->>>>>>> 185d8767790b75c43644c3f596a6be59fb17ccee
 def yearURIs(year):
     artist_name = []
     track_name = []
@@ -104,12 +78,10 @@ the classification of whether you like it or not.
 """
 def buildDataFrame(uris, indexNames, values):
     jsonSongs = sp.audio_features(uris)
-    df = pd.DataFrame(data=jsonSongs, index=indexNames)
-    df.loc[:, "Classification"] = values
-    if print_data_set:
-        pd.set_option('display.max_columns', None)  # Setting allows for entire dataset to be printed
-    return df.drop(columns=["type", "id", "uri", "track_href", "analysis_url", "duration_ms", "time_signature"])
-
+    df = pd.DataFrame(data = jsonSongs, index = indexNames)
+    df.loc[:,"Classification"] = values
+    # pd.set_option('display.max_columns', None) # Setting allows for entire dataset to be printed
+    return df.drop(columns = ["type", "id", "uri", "track_href", "analysis_url", "duration_ms", "time_signature"])
 
 """
 Builds the dataframe for the comparator playlist, which is the same as the one above
@@ -117,43 +89,44 @@ but with no 'duration_ms' and no classification.
 """
 def buildDataFrameCompare(uris, indexNames):
     jsonSongs = sp.audio_features(uris)
-    df = pd.DataFrame(data=jsonSongs, index=indexNames)
-    if print_data_set:
-        pd.set_option('display.max_columns', None)  # Allows for entire dataset to be printed
-    return df.drop(columns=["type", "id", "uri", "track_href", "analysis_url", "time_signature"])
+    df = pd.DataFrame(data = jsonSongs, index = indexNames)
+    # pd.set_option('display.max_columns', None) # Setting allows for entire dataset to be printed
+    return df.drop(columns = ["type", "id", "uri", "track_href", "analysis_url", "time_signature"])
 
-
-# Rounds the numeric values within the fields with some transformations, if needed.
+"""
+Rounds the numeric values within the fields with some transformations, if needed. 
+"""
 def roundAndMapValues(dataframe):
-    dataframe["danceability"] = [mapValues(round(i * 100, 0)) for i in dataframe["danceability"]]
-    dataframe["energy"] = [mapValues(round(i * 100, 0)) for i in dataframe["energy"]]
+    dataframe["danceability"] = [mapValues(round(i*100, 0)) for i in dataframe["danceability"]]
+    dataframe["energy"] = [mapValues(round(i*100, 0)) for i in dataframe["energy"]]
     dataframe["loudness"] = [mapValues(round(i, 0)) for i in dataframe["loudness"]]
-    dataframe["speechiness"] = [mapValues(round(i * 100, 0)) for i in dataframe["speechiness"]]
-    dataframe["acousticness"] = [mapValues(round(i * 100, 0)) for i in dataframe["acousticness"]]
-    dataframe["instrumentalness"] = [mapValues(round(i * 100, 0)) for i in dataframe["instrumentalness"]]
-    dataframe["liveness"] = [mapValues(round(i * 100, 0)) for i in dataframe["liveness"]]
-    dataframe["valence"] = [mapValues(round(i * 100, 0)) for i in dataframe["valence"]]
+    dataframe["speechiness"] = [mapValues(round(i*100, 0)) for i in dataframe["speechiness"]]
+    dataframe["acousticness"] = [mapValues(round(i*100, 0)) for i in dataframe["acousticness"]]
+    dataframe["instrumentalness"] = [mapValues(round(i*100, 0)) for i in dataframe["instrumentalness"]]
+    dataframe["liveness"] = [mapValues(round(i*100, 0)) for i in dataframe["liveness"]]
+    dataframe["valence"] = [mapValues(round(i*100, 0)) for i in dataframe["valence"]]
     dataframe["tempo"] = [mapValues(round(i, 0)) for i in dataframe["tempo"]]
     return dataframe
 
-
-# Maps numeric values, according to a step function of tens
-# (i.e. 0 -> -1, 1 - 9 -> 0, 10 - 19 -> 1)
+"""
+Maps numeric values, according to a step function of tens 
+(i.e. 0 -> -1, 1 - 9 -> 0, 10 - 19 -> 1)
+"""
 def mapValues(num):
     num = abs(num)
     try:
-        length = int(log10(num) + 1)
-
-        if length == 1:
+        len = int(log10(num)+1)
+        if(len == 1):
             return 0
-        elif length == 2:
+        elif(len == 2):
             return getDigit(1, num)
         else:
             return int(str(getDigit(2, num)) + str(getDigit(1, num)))
     except:
-        return -1  # This value is assigned when the numerical value is equal to 0
+        return -1 # this value is assigned when the numerical value is equal to 0
 
-
-# Returns wanted digit from a number
+"""
+Returns wanted digit from a number
+"""
 def getDigit(want, num):
-    return int(num // 10 ** want % 10)
+    return int(num // 10**want % 10)
