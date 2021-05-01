@@ -6,10 +6,14 @@ from math import *
 
 cid = 'd7ef747707434c259054733b6defab05'
 secret = '3a4ae1a96ac24674b1eb14ba39fbacc8'
-
 client_credentials_manager = SpotifyClientCredentials(client_id=cid, client_secret=secret)
 sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
 
+"""
+Given the data from our song file, we can append the URI's to a list
+as well as build two other lists for whether we like it or not and 
+for the track name. Each URI is unique to each song.
+"""
 def playlistReader(data):
     uriList = []
     track_name = []
@@ -20,6 +24,10 @@ def playlistReader(data):
         values.append(int(song[2]))
     return uriList, track_name, values
 
+"""
+Given the data from our comparator file, we can build a list of URI's that
+will help us build the pandas table. Each URI is unique to each song. 
+"""
 def playlistReaderCompare(data):
     uriList = []
     track_name = []
@@ -28,6 +36,10 @@ def playlistReaderCompare(data):
         track_name.append(song[0])
     return uriList, track_name
 
+"""
+We can search up any song on spotify with just a given artist
+and track. We then append it to a list and returned.
+"""
 def findID(artist, track):
     artist_name = []
     track_name = []
@@ -41,6 +53,10 @@ def findID(artist, track):
 
     return artist_name, track_name, track_id
 
+"""
+Given a year, we can pull the top 50 of a song from that year. We then append
+all of the values to the list to return.
+"""
 def yearURIs(year):
     artist_name = []
     track_name = []
@@ -56,7 +72,10 @@ def yearURIs(year):
 
     return artist_name, track_name, track_id, values
 
-
+"""
+Builds a pandas dataframe with the features from the songs playlist. Also shows
+the classification of whether you like it or not.
+"""
 def buildDataFrame(uris, indexNames, values):
     jsonSongs = sp.audio_features(uris)
     df = pd.DataFrame(data = jsonSongs, index = indexNames)
@@ -64,6 +83,10 @@ def buildDataFrame(uris, indexNames, values):
     # pd.set_option('display.max_columns', None) # Setting allows for entire dataset to be printed
     return df.drop(columns = ["type", "id", "uri", "track_href", "analysis_url", "duration_ms", "time_signature"])
 
+"""
+Builds the dataframe for the comparator playlist, which is the same as the one above
+but with no 'duration_ms' and no classification.
+"""
 def buildDataFrameCompare(uris, indexNames):
     jsonSongs = sp.audio_features(uris)
     df = pd.DataFrame(data = jsonSongs, index = indexNames)

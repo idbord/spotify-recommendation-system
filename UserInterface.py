@@ -40,6 +40,10 @@ class Demo:
         except:
             return []
 
+    """
+    Collects the data and stores it into a dataframe.
+    Checks to see if comparator playlist is a file or Top 50 from some year.
+    """
     def collectData(self, songPath, comparatorPath):
         songData = self.readFile(songPath)
         self.songsURIList, self.songsTrackNames, self.songsClassification = dataOrganization.playlistReader(songData)
@@ -78,6 +82,11 @@ class Demo:
         rf.fitLocal(self.dataFrameTrainX, self.dataFrameTrainY)
         return rf.prediction(self.dataFrameTestX)
 
+    """
+    Display Analytics takes in the predictions from some algorithm 
+    and filters out the playlists that did not match our given 
+    song playlist. It then builds a dataframe and returns it to be displayed. 
+    """
     def displayAnalytics(self, predictions):
         tempURIList, tempTrackNames = list(), list()
         for _ in range(len(predictions)):
@@ -93,9 +102,10 @@ class Demo:
         return analyticsTable
 
     def run(self):
-        sFile, cFile = self.getFiles()
+        sFile, cFile = self.getFiles() #Gets song and comparator playlist locations
         print("---- Loading Data ---")
-        self.collectData(sFile, cFile)
+        self.collectData(sFile, cFile) # Stores them in Panda tables. 
+
         while 1:
             print("Choose an Algorithm")
             for index, algo in enumerate(self.algorithms):
@@ -111,11 +121,12 @@ class Demo:
                 self.chooseAlgorithm(self.algorithms[int(option) - 1][1])
             else:
                 print("Not a valid command")
-
             print("\n----------------------------------\n")
-
         print("Enjoy your new music!")
 
+    """
+    Lets you choose an algorithm to run and display analytics
+    """
     def chooseAlgorithm(self, Algorithm):
         predictions = list()
         if Algorithm == "NB": predictions = self.runNaiveBayes()
@@ -125,24 +136,40 @@ class Demo:
         if predictions != []:
             print(self.displayAnalytics(predictions))
 
+    """
+    Program allows you to choose what song/comparator playlist you
+    want. If you add a csv file to the main.py lists, then it will
+    automatically adjust, so you can choose what playlist you want. 
+    """
     def getFiles(self):
         songFile = "songs.csv"
         comparatorFile = "comparator.csv"
 
+        # Displays songs
         print("Song Playlists: ")
         for index, playlist in enumerate(self.sFiles):
             print(f"{index + 1}. {playlist}")
-        songOption = input("Choose playlist: ")
+        songOption = input("Choose playlist: ") # grabs song pick
 
+        """
+        sets songFile to what you option you picked as long as it
+        is within range of songList. If it's not, sets it to default
+        song playlist of "songs.csv"
+        """
         if int(songOption) - 1 < len(self.sFiles):
             songFile = self.sFiles[int(songOption) - 1]
 
+        # Display comparator playlists
         print("Comparator Playlists: ")
         for index, playlist in enumerate(self.cFiles):
             print(f"{index + 1}. {playlist}")
         print(f"{len(self.cFiles) + 1}. Choose a year (2019 or earlier)") #2020 will not work for some reason, but 2019 will
-        comparatorOption = input("Choose playlist: ")
+        comparatorOption = input("Choose playlist: ") # grab comparator option
         
+        """
+        Checks if it's within bounds of comparator playlist or if
+        you're choosing Top 50 from some year (2019 or earlier).
+        """
         if int(comparatorOption) == len(self.cFiles) + 1:
             year = int(input("Input a year: "))
             artist_name, track_name, track_id, values = dataOrganization.yearURIs(year)
@@ -152,6 +179,3 @@ class Demo:
             comparatorFile = self.cFiles[int(comparatorOption) - 1]
         
         return songFile, comparatorFile
-
-
-
