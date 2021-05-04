@@ -102,9 +102,9 @@ class Demo:
         return analyticsTable
 
     def run(self):
-        sFile, cFile = self.getFiles() #Gets song and comparator playlist locations
+        sFile, cFile = self.getFiles()  # Gets song and comparator playlist locations
         print("---- Loading Data ---")
-        self.collectData(sFile, cFile) # Stores them in Panda tables. 
+        self.collectData(sFile, cFile)  # Stores them in Panda tables.
 
         while 1:
             print("Choose an Algorithm")

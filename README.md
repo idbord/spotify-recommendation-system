@@ -10,6 +10,8 @@ It lets you use three different algorithms, Naive Bayes, Random Forest, and K-Ne
 
 
 ### dataOrganization.py
+This module is used to connect to and pull information from the Spotify API.
+It has methods that can find the Spotify ID of a song, the top 50 songs of a given year, and is ablel to turn CSV files of names and artists of songs into useful information for the program to use.
 
 
 ### kNearestNeighbor.py
