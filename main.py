@@ -1,22 +1,9 @@
 import userInterface
 
 if __name__ == '__main__':
-    """
-    If you want to make your own playlist or comparator playlist, please add the
-    file name to the lists below.
+    sFiles = ["songs.csv", "songs2.csv", "songs3.csv"]
+    cFiles = ["comparator.csv", "comparator2.csv", "comparator3.csv"]
+    needHelp = False
 
-    sFiles = Song files
-    sFile format: song,artist,like or not like (1 = like, 0 = do not like) 
-    sFile Example: The Box,Roddy Ricch,0
-
-    cFiles = Comparator files
-    cFile format: song,artist
-    cFile Example: The Box,Roddy Ricch
-
-    Once you are ready to start, just run this main.py file.
-    """
-    sFiles = ["songs.csv", "songs2.csv"]
-    cFiles = ["comparator.csv", "comparator2.csv"]
-
-    Demo = userInterface.Demo(sFiles, cFiles)
+    Demo = userInterface.Demo(sFiles, cFiles, needHelp)
     Demo.run()

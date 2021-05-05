@@ -4,9 +4,11 @@ from naiveBayes import *
 from kNearestNeighbor import *
 from randomForest import *
 import analytics
+import seaborn as sns
+import matplotlib.pyplot as plt
 
 class Demo:
-    def __init__(self, sFiles, cFiles):
+    def __init__(self, sFiles, cFiles, needHelp):
         self.algorithms = [("Naive Bayes", "NB"), ("K-Nearest Neighbor", "KNN"), ("Random Forest", "RF")]
         self.dataFrameTrainX = None
         self.dataFrameTrainY = None
@@ -29,6 +31,8 @@ class Demo:
         self.sFiles = sFiles
         self.cFiles = cFiles
 
+        self.needHelp = needHelp
+
     def readFile(self, path):
         path = "./Playlists/" + path
         try:
@@ -46,14 +50,14 @@ class Demo:
     """
     def collectData(self, songPath, comparatorPath):
         songData = self.readFile(songPath)
-        self.songsURIList, self.songsTrackNames, self.songsClassification = dataOrganization.playlistReader(songData)
+        self.songsURIList, self.songsTrackNames, self.songsClassification = dataOrganization.playlistReader(songData, self.needHelp)
         self.songsDataFrame = dataOrganization.buildDataFrame(self.songsURIList, self.songsTrackNames, self.songsClassification)
         self.songsDataFrameRounded = dataOrganization.roundAndMapValues(self.songsDataFrame)
         self.songsDataFrameTestNumpy = self.songsDataFrameRounded.to_numpy()
 
         if comparatorPath != None:
             self.comparatorData = self.readFile(comparatorPath)
-            self.comparatorURIList, self.comparatorTrackNames = dataOrganization.playlistReaderCompare(self.comparatorData)
+            self.comparatorURIList, self.comparatorTrackNames = dataOrganization.playlistReaderCompare(self.comparatorData, self.needHelp)
 
         self.comparatorDataFrame = dataOrganization.buildDataFrameCompare(self.comparatorURIList, self.comparatorTrackNames)
         self.comparatorDataFrameRounded = dataOrganization.roundAndMapValues(self.comparatorDataFrame)
@@ -96,7 +100,8 @@ class Demo:
 
         comparatorPlayListUpdated = dataOrganization.buildDataFrame(tempURIList, tempTrackNames, [1] * len(tempURIList))
         comparatorPlayListUpdated = dataOrganization.roundAndMapValues(comparatorPlayListUpdated)
-
+        comparatorPlayListUpdated = comparatorPlayListUpdated.drop_duplicates()
+        
         songsTable = analytics.findAverage(self.songsDataFrameRounded, "Songs")
         analyticsTable = analytics.dataTable(songsTable, comparatorPlayListUpdated.transpose())
         return analyticsTable
@@ -110,13 +115,19 @@ class Demo:
             print("Choose an Algorithm")
             for index, algo in enumerate(self.algorithms):
                 print(f"{index + 1}. {algo[0]}")
+            
+            print("D. Display KNN Graphs")
             print("Q. Quit")
             option = input("Choose a playlist: ")
 
             if option == "q" or option == "Q":
                 break
-            
-            if int(option) > 0 and int(option) <= len(self.algorithms):
+
+            if option == "d" or option == "D":
+                print("Gathering data and building your graphs...")
+                self.displayKNN()
+
+            elif int(option) > 0 and int(option) <= len(self.algorithms):
                 print()
                 self.chooseAlgorithm(self.algorithms[int(option) - 1][1])
             else:
@@ -159,7 +170,8 @@ class Demo:
         if int(songOption) - 1 < len(self.sFiles):
             songFile = self.sFiles[int(songOption) - 1]
 
-        # Display comparator playlists
+    
+        # Display comparator playlists    
         print("Comparator Playlists: ")
         for index, playlist in enumerate(self.cFiles):
             print(f"{index + 1}. {playlist}")
@@ -179,3 +191,25 @@ class Demo:
             comparatorFile = self.cFiles[int(comparatorOption) - 1]
         
         return songFile, comparatorFile
+
+    def displayKNN(self):
+        predictions = self.runKNN()
+        tempURIList, tempTrackNames = list(), list()
+        for _ in range(len(predictions)):
+            if predictions[_] == 1:
+                tempURIList.append(self.comparatorURIList[_])
+                tempTrackNames.append(self.comparatorTrackNames[_])
+
+        comparatorPlayListUpdated = dataOrganization.buildDataFrame(tempURIList, tempTrackNames, [1] * len(tempURIList))
+        comparatorPlayListUpdated = dataOrganization.roundAndMapValues(comparatorPlayListUpdated)
+        comparatorPlayListUpdated = comparatorPlayListUpdated.drop_duplicates()
+
+        analyticsTable = analytics.dataTable(self.songsDataFrameRounded.transpose(), comparatorPlayListUpdated.transpose())
+
+        sns.pairplot(
+            analyticsTable,
+            hue = "Classification",
+            corner = True,
+            kind = 'reg'
+        )
+        plt.show()
