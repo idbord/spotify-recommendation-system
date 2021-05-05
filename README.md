@@ -76,7 +76,7 @@ Example: The Box,Roddy Ricch
 For the comparator playlist, you may add as many songs you would like to. The comparator playlist are the songs that the algorithms may recommend you add to your songs playlist.
 
 #### 2c) Comparator Playlist -- Top 50 for a year
-If you choose to use the Top 50 songs from some year, you do not need to edit any code and you will be prompted to select a year using the user interface. Please note that you may choose any year from 2019 to 1951 (years around 1951 may cause errors, so we recommend staying above the year 2000).
+If you choose to use the Top 50 songs from some year, you do not need to edit any code and you will be prompted to select a year using the user interface. Please note that you may choose any year from 2021 to 1951 (years around 1951 may cause errors, so we recommend staying above the year 2000).
 #### 3) Running the program
 Once you have organized your playlists, run the main.py file and use the console to interact with the program. If you have any issues with loading in songs, it may be due to an error while typing it in the CSV file. Please set the 'needHelp' variable to True (bool) and every song loading in will be printed in the console. The last song printed in the console (assuming it is breaking) is the reason your program may not be working properly. Here are some common issues that you may be experiencing...
 1) You have quotes ("") around song names or artist names 

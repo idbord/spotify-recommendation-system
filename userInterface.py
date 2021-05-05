@@ -175,12 +175,12 @@ class Demo:
         print("Comparator Playlists: ")
         for index, playlist in enumerate(self.cFiles):
             print(f"{index + 1}. {playlist}")
-        print(f"{len(self.cFiles) + 1}. Choose a year (2019 or earlier)")  # 2020 will not work for some reason, but 2019 will
+        print(f"{len(self.cFiles) + 1}. Choose a year (2021 or earlier)")  # 2020 will not work for some reason, but 2019 will
         comparatorOption = input("Choose playlist: ")  # Grab comparator option
         
         """
         Checks if it's within bounds of comparator playlist or if
-        you're choosing Top 50 from some year (2019 or earlier).
+        you're choosing Top 50 from some year (2021 or earlier).
         """
         if int(comparatorOption) == len(self.cFiles) + 1:
             year = int(input("Input a year: "))
